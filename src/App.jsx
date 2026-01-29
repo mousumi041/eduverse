@@ -9,6 +9,9 @@ import Subject from "./subject";
 import Register from "./register.jsx";
 import Profile from "./profile";
 
+/* 🔽 NEW IMPORTS (ADDED, NOTHING ELSE TOUCHED) */
+import QuizSubjects from "./QuizSubjects";
+import QuizPage from "./QuizPage";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -122,6 +125,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
 
+          {/* 🔽 NEW QUIZ ROUTES (ADDED ONLY) */}
+          <Route path="/quizzes" element={<QuizSubjects />} />
+          <Route path="/quiz/:subject" element={<QuizPage />} />
         </Routes>
       </>
     </Router>
