@@ -1,0 +1,127 @@
+/* ====== GLOBAL ====== */
+.page {
+  padding: 40px 60px;
+  background: #f7f9fb;
+  min-height: 100vh;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1c1d1f;
+}
+
+/* ====== BACK BUTTON ====== */
+.back {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #5624d0;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* ====== GRID FOR CATEGORY & SUBJECT ====== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+/* ====== CARD ====== */
+.card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 28px 22px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #5624d0, #8b5cf6);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.card:hover::after {
+  opacity: 0.08;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1c1d1f;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.card p {
+  font-size: 14px;
+  color: #6a6f73;
+  position: relative;
+  z-index: 2;
+}
+
+/* ====== VIDEO GRID ====== */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+/* ====== VIDEO CARD ====== */
+.video-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.14);
+}
+
+/* ====== IFRAME ====== */
+.video-card iframe {
+  width: 100%;
+  height: 200px;
+  border: none;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 900px) {
+  .page {
+    padding: 30px 24px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  .video-card iframe {
+    height: 180px;
+  }
+}
+
+@media (max-width: 500px) {
+  .video-card iframe {
+    height: 160px;
+  }
+}

@@ -1,0 +1,183 @@
+/* src/register.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+/* PAGE */
+.register-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 16px;
+}
+
+/* GLASS CARD */
+.register-glass {
+  width: 980px;
+  max-width: 95%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border-radius: 30px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* LEFT PANEL */
+.register-left {
+  padding: 60px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 204, 112, 0.95),
+    rgba(255, 140, 0, 0.95)
+  );
+  color: #000;
+}
+
+.register-left h1 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.register-left h2 {
+  margin-top: 40px;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.register-left p {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 420px;
+}
+
+.register-left-footer {
+  margin-top: 40px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.register-left-footer a {
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.35);
+  padding-bottom: 2px;
+}
+
+/* RIGHT PANEL */
+.register-right {
+  padding: 60px;
+  color: #fff;
+}
+
+.register-right h2 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #ffcc70;
+}
+
+/* INPUTS */
+.input-box {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 12px 10px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #9ca3af;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+}
+
+.input-box label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: -8px;
+  font-size: 12px;
+  color: #ffcc70;
+}
+
+/* OPTIONS */
+.register-options {
+  margin: 6px 0 28px;
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+.terms {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.4;
+}
+
+.terms input {
+  margin-top: 3px;
+}
+
+.terms a {
+  color: #ffcc70;
+  text-decoration: none;
+}
+
+/* BUTTON */
+.register-right button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #ffcc70, #ff8c00);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* BOTTOM TEXT */
+.login-back {
+  margin-top: 22px;
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+.login-back a {
+  color: #ffcc70;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  .register-glass {
+    grid-template-columns: 1fr;
+  }
+
+  .register-left {
+    display: none;
+  }
+
+  .register-right {
+    padding: 50px 26px;
+  }
+}

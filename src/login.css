@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+/* PAGE */
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* GLASS CARD */
+.login-glass {
+  width: 900px;
+  max-width: 95%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border-radius: 30px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+
+/* LEFT PANEL */
+.login-left {
+  padding: 60px;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 204, 112, 0.9),
+    rgba(255, 140, 0, 0.9)
+  );
+  color: #000;
+}
+
+.login-left h1 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.login-left h2 {
+  margin-top: 40px;
+  font-size: 36px;
+}
+
+.login-left p {
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* RIGHT PANEL */
+.login-right {
+  padding: 60px;
+  color: #fff;
+}
+
+.login-right h2 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #ffcc70;
+}
+
+/* INPUTS */
+.input-box {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 12px 10px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #9ca3af;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+}
+
+.input-box label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: -8px;
+  font-size: 12px;
+  color: #ffcc70;
+}
+
+/* OPTIONS */
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.options a {
+  color: #ffcc70;
+  text-decoration: none;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #ffcc70, #ff8c00);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* REGISTER */
+.register {
+  margin-top: 25px;
+  font-size: 14px;
+}
+
+.register a {
+  color: #ffcc70;
+  text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  .login-glass {
+    grid-template-columns: 1fr;
+  }
+
+  .login-left {
+    display: none;
+  }
+}

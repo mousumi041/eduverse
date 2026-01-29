@@ -1,0 +1,62 @@
+/* src/index.css */
+
+/* Keep this file “neutral”.
+   Your real styling is in App.css / about.css / courses.css / login.css.
+   The biggest fix: DO NOT make body display:flex and center everything. */
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  /* ❌ REMOVE layout-forcing flex centering */
+  /* display: flex; */
+  /* place-items: center; */
+
+  /* Let your page CSS handle background/text color */
+  background: transparent;
+  color: inherit;
+}
+
+/* Don’t globally force link colors (your navbar styles links itself) */
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+/* Don’t globally style every button (login/App already styles them) */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Optional: make images behave nicely */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
