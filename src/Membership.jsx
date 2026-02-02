@@ -1,4 +1,4 @@
-import "./membership.css";
+import "./Membership.css";
 import { useNavigate } from "react-router-dom";
 
 function Membership() {

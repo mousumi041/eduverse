@@ -28,7 +28,7 @@ function App() {
             <Link to="/">Home</Link>
             <Link to="/courses">Courses</Link>
             <Link to="/about">About</Link>
-            <Link to="/membership">Membership</Link>
+            
             {/* LOGIN STATE */}
             {user ? (
               <>
@@ -36,6 +36,7 @@ function App() {
                   Hello, {user.fullName}
                 </span>
                 <Link to="/profile">My Profile</Link>
+                <Link to="/membership">Membership</Link>
               </>
             ) : (
               <Link to="/login">Login</Link>
