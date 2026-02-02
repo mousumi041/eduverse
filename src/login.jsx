@@ -28,19 +28,23 @@ function Login() {
       return;
     }
 
+    // ✅ FIX HERE
     if (
-      enteredEmail === storedUser.username &&
+      enteredEmail === storedUser.email &&
       enteredPassword === storedUser.password
     ) {
       localStorage.setItem(
         "user",
-        JSON.stringify({ username: storedUser.username })
+        JSON.stringify({
+          fullName: storedUser.fullName,
+          email: storedUser.email,
+        })
       );
 
       navigate("/");
       window.location.reload();
     } else {
-      setError("Invalid username or password");
+      setError("Invalid email or password");
     }
   };
 

@@ -1,79 +1,149 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function QuizPage() {
   const { subject } = useParams();
   const navigate = useNavigate();
 
-  const quizData = {
+  const quizBank = {
     React: [
       {
         q: "What is React?",
         options: [
-          "Library",
-          "Framework",
-          "Language",
-          "Database"
+          "A JavaScript library",
+          "A programming language",
+          "A database",
+          "A web server"
         ],
         a: 0
       },
       {
         q: "Which hook is used for state?",
-        options: ["useData", "useState", "useFetch", "useStore"],
+        options: ["useEffect", "useState", "useRef", "useContext"],
+        a: 1
+      },
+      {
+        q: "JSX stands for?",
+        options: [
+          "JavaScript XML",
+          "Java Syntax Extension",
+          "JSON XML",
+          "JavaScript XHR"
+        ],
+        a: 0
+      },
+      {
+        q: "Which company created React?",
+        options: ["Google", "Facebook", "Microsoft", "Amazon"],
         a: 1
       }
     ],
     JavaScript: [
       {
-        q: "Which is not JS datatype?",
-        options: ["Number", "String", "Boolean", "Float"],
+        q: "Which is NOT a JavaScript datatype?",
+        options: ["String", "Boolean", "Undefined", "Float"],
         a: 3
+      },
+      {
+        q: "Which keyword declares a variable?",
+        options: ["var", "int", "define", "declare"],
+        a: 0
+      },
+      {
+        q: "Which symbol is used for comments?",
+        options: ["//", "##", "<!-- -->", "**"],
+        a: 0
+      },
+      {
+        q: "Which method converts JSON to object?",
+        options: [
+          "JSON.parse()",
+          "JSON.stringify()",
+          "JSON.convert()",
+          "JSON.object()"
+        ],
+        a: 0
       }
     ]
   };
 
-  const questions = quizData[subject] || [];
+  const questions = quizBank[subject] || [];
+
   const [index, setIndex] = useState(0);
-  const [score, setScore] = useState(0);
   const [selected, setSelected] = useState(null);
+  const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(300);
   const [finished, setFinished] = useState(false);
+
+  /* TIMER */
+  useEffect(() => {
+    if (finished) return;
+
+    if (timeLeft === 0) {
+      finishQuiz();
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setTimeLeft((t) => t - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [timeLeft, finished]);
 
   const handleNext = () => {
     if (selected === questions[index].a) {
-      setScore(score + 1);
+      setScore((s) => s + 1);
     }
-
-    setSelected(null);
 
     if (index + 1 < questions.length) {
-      setIndex(index + 1);
+      setIndex((i) => i + 1);
+      setSelected(null);
     } else {
-      setFinished(true);
-      const count =
-        Number(localStorage.getItem("quizzesTaken")) || 0;
-      localStorage.setItem("quizzesTaken", count + 1);
+      finishQuiz();
     }
+  };
+
+  const finishQuiz = () => {
+    setFinished(true);
+    const count =
+      Number(localStorage.getItem("quizzesTaken")) || 0;
+    localStorage.setItem("quizzesTaken", count + 1);
   };
 
   return (
     <div className="page">
       <h1>{subject} Quiz</h1>
 
+      <p>
+        ⏱ Time Left: {Math.floor(timeLeft / 60)}:
+        {String(timeLeft % 60).padStart(2, "0")}
+      </p>
+
       {!finished ? (
         <div className="card">
-          <h3>{questions[index]?.q}</h3>
+          <h3>
+            Q{index + 1}. {questions[index].q}
+          </h3>
 
-          {questions[index]?.options.map((op, i) => (
-            <div key={i}>
-              <label>
-                <input
-                  type="radio"
-                  name="opt"
-                  checked={selected === i}
-                  onChange={() => setSelected(i)}
-                />{" "}
-                {op}
-              </label>
+          {questions[index].options.map((op, i) => (
+            <div
+              key={i}
+              onClick={() => setSelected(i)}
+              style={{
+                margin: "12px 0",
+                padding: "12px 18px",
+                borderRadius: "12px",
+                cursor: "pointer",
+                border:
+                  selected === i
+                    ? "2px solid #ff8c00"
+                    : "1px solid #ddd",
+                background:
+                  selected === i ? "#fff4e0" : "#fff"
+              }}
+            >
+              {op}
             </div>
           ))}
 
@@ -83,7 +153,7 @@ function QuizPage() {
             style={{ marginTop: "20px" }}
           >
             {index + 1 === questions.length
-              ? "Submit"
+              ? "Submit Quiz"
               : "Next"}
           </button>
         </div>
@@ -91,10 +161,10 @@ function QuizPage() {
         <div className="card">
           <h2>🎉 Quiz Completed</h2>
           <p>
-            Score: {score} / {questions.length}
+            Your Score: {score} / {questions.length}
           </p>
 
-          <button onClick={() => navigate("/")}>
+          <button onClick={() => navigate("/profile")}>
             Back to Dashboard
           </button>
         </div>

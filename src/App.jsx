@@ -8,6 +8,7 @@ import Category from "./category";
 import Subject from "./subject";
 import Register from "./register.jsx";
 import Profile from "./profile";
+import Membership from "./Membership";
 
 /* 🔽 NEW IMPORTS (ADDED, NOTHING ELSE TOUCHED) */
 import QuizSubjects from "./QuizSubjects";
@@ -27,12 +28,12 @@ function App() {
             <Link to="/">Home</Link>
             <Link to="/courses">Courses</Link>
             <Link to="/about">About</Link>
-
+            <Link to="/membership">Membership</Link>
             {/* LOGIN STATE */}
             {user ? (
               <>
                 <span style={{ marginLeft: "30px", color: "#ffcc70" }}>
-                  Hello, {user.username}
+                  Hello, {user.fullName}
                 </span>
                 <Link to="/profile">My Profile</Link>
               </>
@@ -125,9 +126,11 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
 
-          {/* 🔽 NEW QUIZ ROUTES (ADDED ONLY) */}
+          
           <Route path="/quizzes" element={<QuizSubjects />} />
           <Route path="/quiz/:subject" element={<QuizPage />} />
+          <Route path="/membership" element={<Membership />} />
+
         </Routes>
       </>
     </Router>

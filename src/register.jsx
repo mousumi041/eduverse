@@ -25,6 +25,17 @@ function Register() {
       return;
     }
 
+    // 🔹 NEW LOGIC (NO UI CHANGE)
+    const existingUser = JSON.parse(
+      localStorage.getItem("registeredUser")
+    );
+
+    if (existingUser && existingUser.email === email) {
+      alert("Account already exists. Please login.");
+      return;
+    }
+
+    // 🔹 SAME AS BEFORE
     localStorage.setItem(
       "registeredUser",
       JSON.stringify({
@@ -96,7 +107,9 @@ function Register() {
                 type="password"
                 required
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) =>
+                  setConfirmPassword(e.target.value)
+                }
               />
               <label>Confirm Password</label>
             </div>
@@ -110,14 +123,16 @@ function Register() {
             <div className="register-options">
               <label className="terms">
                 <input type="checkbox" required />
-                I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
+                I agree to the <a href="#">Terms</a> and{" "}
+                <a href="#">Privacy Policy</a>
               </label>
             </div>
 
             <button type="submit">Create Account</button>
 
             <p className="login-back">
-              Already have an account? <Link to="/login">Login</Link>
+              Already have an account?{" "}
+              <Link to="/login">Login</Link>
             </p>
           </form>
         </div>
