@@ -1,4 +1,3 @@
-// src/register.jsx
 import "./register.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -12,6 +11,10 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+  /* ✅ REGEX */
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
   const handleRegister = (e) => {
     e.preventDefault();
 
@@ -20,12 +23,25 @@ function Register() {
       return;
     }
 
+    /* ✅ EMAIL FORMAT CHECK */
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    /* ✅ PASSWORD STRENGTH CHECK */
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password must be at least 6 characters and contain a number"
+      );
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
 
-    // 🔹 NEW LOGIC (NO UI CHANGE)
     const existingUser = JSON.parse(
       localStorage.getItem("registeredUser")
     );
@@ -35,7 +51,6 @@ function Register() {
       return;
     }
 
-    // 🔹 SAME AS BEFORE
     localStorage.setItem(
       "registeredUser",
       JSON.stringify({
@@ -52,7 +67,6 @@ function Register() {
     <div className="register-page">
       <div className="register-glass">
 
-        {/* LEFT */}
         <div className="register-left">
           <h1>EduVerse 🇮🇳</h1>
           <h2>Create Account</h2>
@@ -67,7 +81,6 @@ function Register() {
           </div>
         </div>
 
-        {/* RIGHT */}
         <div className="register-right">
           <h2>Sign Up</h2>
 

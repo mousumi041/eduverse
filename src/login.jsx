@@ -8,6 +8,10 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  /* ✅ REGEX */
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -16,6 +20,18 @@ function Login() {
 
     if (!enteredEmail || !enteredPassword) {
       setError("Please fill all fields");
+      return;
+    }
+
+    /* ✅ EMAIL FORMAT CHECK */
+    if (!emailRegex.test(enteredEmail)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    /* ✅ PASSWORD FORMAT CHECK */
+    if (!passwordRegex.test(enteredPassword)) {
+      setError("Invalid password format");
       return;
     }
 
@@ -28,7 +44,6 @@ function Login() {
       return;
     }
 
-    // ✅ FIX HERE
     if (
       enteredEmail === storedUser.email &&
       enteredPassword === storedUser.password
@@ -52,7 +67,6 @@ function Login() {
     <div className="login-page">
       <div className="login-glass">
 
-        {/* LEFT */}
         <div className="login-left">
           <h1>EduVerse 🇮🇳</h1>
           <h2>Welcome Back!</h2>
@@ -62,7 +76,6 @@ function Login() {
           </p>
         </div>
 
-        {/* RIGHT */}
         <div className="login-right">
           <h2>Login</h2>
 
