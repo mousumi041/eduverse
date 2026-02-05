@@ -21,21 +21,6 @@ function QuizPage() {
         q: "Which hook is used for state?",
         options: ["useEffect", "useState", "useRef", "useContext"],
         a: 1
-      },
-      {
-        q: "JSX stands for?",
-        options: [
-          "JavaScript XML",
-          "Java Syntax Extension",
-          "JSON XML",
-          "JavaScript XHR"
-        ],
-        a: 0
-      },
-      {
-        q: "Which company created React?",
-        options: ["Google", "Facebook", "Microsoft", "Amazon"],
-        a: 1
       }
     ],
     JavaScript: [
@@ -43,26 +28,6 @@ function QuizPage() {
         q: "Which is NOT a JavaScript datatype?",
         options: ["String", "Boolean", "Undefined", "Float"],
         a: 3
-      },
-      {
-        q: "Which keyword declares a variable?",
-        options: ["var", "int", "define", "declare"],
-        a: 0
-      },
-      {
-        q: "Which symbol is used for comments?",
-        options: ["//", "##", "<!-- -->", "**"],
-        a: 0
-      },
-      {
-        q: "Which method converts JSON to object?",
-        options: [
-          "JSON.parse()",
-          "JSON.stringify()",
-          "JSON.convert()",
-          "JSON.object()"
-        ],
-        a: 0
       }
     ]
   };
@@ -79,7 +44,7 @@ function QuizPage() {
   useEffect(() => {
     if (finished) return;
 
-    if (timeLeft === 0) {
+    if (timeLeft <= 0) {
       finishQuiz();
       return;
     }
@@ -97,7 +62,7 @@ function QuizPage() {
     }
 
     if (index + 1 < questions.length) {
-      setIndex((i) => i + 1);
+      setIndex(index + 1);
       setSelected(null);
     } else {
       finishQuiz();
@@ -106,8 +71,7 @@ function QuizPage() {
 
   const finishQuiz = () => {
     setFinished(true);
-    const count =
-      Number(localStorage.getItem("quizzesTaken")) || 0;
+    const count = Number(localStorage.getItem("quizzesTaken")) || 0;
     localStorage.setItem("quizzesTaken", count + 1);
   };
 
@@ -115,7 +79,7 @@ function QuizPage() {
     <div className="page">
       <h1>{subject} Quiz</h1>
 
-      <p>
+      <p style={{ textAlign: "center" }}>
         ⏱ Time Left: {Math.floor(timeLeft / 60)}:
         {String(timeLeft % 60).padStart(2, "0")}
       </p>
@@ -132,33 +96,30 @@ function QuizPage() {
               onClick={() => setSelected(i)}
               style={{
                 margin: "12px 0",
-                padding: "12px 18px",
-                borderRadius: "12px",
+                padding: "14px 20px",
+                borderRadius: "14px",
                 cursor: "pointer",
                 border:
                   selected === i
                     ? "2px solid #ff8c00"
-                    : "1px solid #ddd",
+                    : "1px solid rgba(255,255,255,0.3)",
                 background:
-                  selected === i ? "#fff4e0" : "#fff"
+                  selected === i
+                    ? "rgba(255, 204, 112, 0.25)"
+                    : "rgba(255,255,255,0.08)",
+                color: "#fff"
               }}
             >
               {op}
             </div>
           ))}
 
-          <button
-            onClick={handleNext}
-            disabled={selected === null}
-            style={{ marginTop: "20px" }}
-          >
-            {index + 1 === questions.length
-              ? "Submit Quiz"
-              : "Next"}
+          <button onClick={handleNext} disabled={selected === null}>
+            {index + 1 === questions.length ? "Submit Quiz" : "Next"}
           </button>
         </div>
       ) : (
-        <div className="card">
+        <div className="card" style={{ textAlign: "center" }}>
           <h2>🎉 Quiz Completed</h2>
           <p>
             Your Score: {score} / {questions.length}
