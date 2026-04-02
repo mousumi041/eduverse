@@ -24,6 +24,7 @@ function QuizPage() {
       }
     ],
     JavaScript: [
+    
       {
         q: "Which is NOT a JavaScript datatype?",
         options: ["String", "Boolean", "Undefined", "Float"],
@@ -124,6 +125,7 @@ function QuizPage() {
           <p>
             Your Score: {score} / {questions.length}
           </p>
+
 
           <button onClick={() => navigate("/profile")}>
             Back to Dashboard

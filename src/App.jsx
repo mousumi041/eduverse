@@ -131,6 +131,7 @@ function App() {
           <Route path="/quizzes" element={<QuizSubjects />} />
           <Route path="/quiz/:subject" element={<QuizPage />} />
           <Route path="/membership" element={<Membership />} />
+          
 
         </Routes>
       </>

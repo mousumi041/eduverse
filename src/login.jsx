@@ -8,58 +8,47 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  /* ✅ REGEX */
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const enteredEmail = email.trim();
-    const enteredPassword = password.trim();
-
-    if (!enteredEmail || !enteredPassword) {
+    if (!email || !password) {
       setError("Please fill all fields");
       return;
     }
 
-    /* ✅ EMAIL FORMAT CHECK */
-    if (!emailRegex.test(enteredEmail)) {
-      setError("Please enter a valid email address");
-      return;
-    }
+    try {
+      // ✅ FIXED URL (IMPORTANT)
+      const res = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
 
-    /* ✅ PASSWORD FORMAT CHECK */
-    if (!passwordRegex.test(enteredPassword)) {
-      setError("Invalid password format");
-      return;
-    }
+      let data;
 
-    const storedUser = JSON.parse(
-      localStorage.getItem("registeredUser")
-    );
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Server not responding properly");
+      }
 
-    if (!storedUser) {
-      setError("No account found. Please create an account.");
-      return;
-    }
+      if (!res.ok) {
+        throw new Error(data.error || "Login failed");
+      }
 
-    if (
-      enteredEmail === storedUser.email &&
-      enteredPassword === storedUser.password
-    ) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          fullName: storedUser.fullName,
-          email: storedUser.email,
-        })
-      );
+      // store user
+      localStorage.setItem("user", JSON.stringify({
+        fullName: data.user.name,
+        email: data.user.email
+      }));
 
       navigate("/");
       window.location.reload();
-    } else {
-      setError("Invalid email or password");
+
+    } catch (err) {
+      setError(err.message);
     }
   };
 

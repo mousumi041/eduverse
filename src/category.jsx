@@ -1,11 +1,27 @@
 import { useParams, useNavigate } from "react-router-dom";
-import coursesData from "./coursesData";
+import { useEffect, useState } from "react";
 import "./courses.css";
 
 export default function Category() {
   const { category } = useParams();
   const navigate = useNavigate();
-  const subjects = coursesData[category];
+  const [subjects, setSubjects] = useState({});
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/courses")
+      .then(res => res.json())
+      .then(data => {
+        const filtered = {};
+
+        data.forEach(course => {
+          if (course.category === category) {
+            filtered[course.subject] = course.videos;
+          }
+        });
+
+        setSubjects(filtered);
+      });
+  }, [category]);
 
   return (
     <div className="page">

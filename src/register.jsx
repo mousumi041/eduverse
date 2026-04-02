@@ -11,11 +11,10 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  /* ✅ REGEX */
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (!fullName || !email || !password || !confirmPassword) {
@@ -23,17 +22,13 @@ function Register() {
       return;
     }
 
-    /* ✅ EMAIL FORMAT CHECK */
     if (!emailRegex.test(email)) {
       setError("Please enter a valid email address");
       return;
     }
 
-    /* ✅ PASSWORD STRENGTH CHECK */
     if (!passwordRegex.test(password)) {
-      setError(
-        "Password must be at least 6 characters and contain a number"
-      );
+      setError("Password must be at least 6 characters and contain a number");
       return;
     }
 
@@ -42,25 +37,37 @@ function Register() {
       return;
     }
 
-    const existingUser = JSON.parse(
-      localStorage.getItem("registeredUser")
-    );
+    try {
+      const res = await fetch("http://localhost:5000/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: fullName,
+          email: email,
+          password: password
+        })
+      });
 
-    if (existingUser && existingUser.email === email) {
-      alert("Account already exists. Please login.");
-      return;
+      // ✅ SAFE JSON PARSE (prevents crash like login issue)
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Server not responding properly");
+      }
+
+      if (!res.ok) {
+        throw new Error(data.error || "Registration failed");
+      }
+
+      alert("Account created successfully 🎉");
+      navigate("/login");
+
+    } catch (err) {
+      setError(err.message);
     }
-
-    localStorage.setItem(
-      "registeredUser",
-      JSON.stringify({
-        fullName,
-        email,
-        password
-      })
-    );
-
-    navigate("/login");
   };
 
   return (
