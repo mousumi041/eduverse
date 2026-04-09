@@ -50,6 +50,7 @@ h1 {
   background: linear-gradient(135deg, #5624d0, #8b5cf6);
   opacity: 0;
   transition: opacity 0.25s ease;
+  pointer-events: none;
 }
 
 .card:hover::after {

@@ -274,3 +274,8 @@ footer {
     margin-left: 0;
   }
 }
+/*for quiz*/
+.page {
+  position: relative;
+  z-index: 10;
+}

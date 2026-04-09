@@ -15,7 +15,10 @@ function QuizSubjects() {
             key={sub}
             className="card"
             style={{ cursor: "pointer" }}
-            onClick={() => navigate(`/quiz/${sub}`)}  // ✅ correct
+            
+            // ✅ FIX: encode subject for safe URL (important)
+            onClick={() => navigate(`/quiz/${encodeURIComponent(sub)}`)}
+            
           >
             <h3>📘 {sub}</h3>
             <p>20 Questions • 5 Minutes</p>

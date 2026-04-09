@@ -32,27 +32,13 @@ function Profile() {
     window.location.reload();
   };
 
-  /* 🔐 Password Update Logic */
-  const handlePasswordUpdate = () => {
+  /* 🔐 Password Update Logic (FIXED — NOW USES BACKEND) */
+  const handlePasswordUpdate = async () => {
     setPasswordError("");
     setSuccessMessage("");
 
-    const storedUser = JSON.parse(
-      localStorage.getItem("registeredUser")
-    );
-
-    if (!storedUser) {
-      setPasswordError("No registered account found.");
-      return;
-    }
-
-    if (!loggedUser || loggedUser.email !== storedUser.email) {
-      setPasswordError("User mismatch.");
-      return;
-    }
-
-    if (currentPassword !== storedUser.password) {
-      setPasswordError("Current password is incorrect.");
+    if (!loggedUser) {
+      setPasswordError("User not logged in.");
       return;
     }
 
@@ -71,26 +57,47 @@ function Profile() {
       return;
     }
 
-    const updatedUser = {
-      ...storedUser,
-      password: newPassword,
-    };
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/users/update-password/${loggedUser.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            oldPassword: currentPassword,
+            newPassword: newPassword,
+          }),
+        }
+      );
 
-    localStorage.setItem(
-      "registeredUser",
-      JSON.stringify(updatedUser)
-    );
+      let data;
 
-    setSuccessMessage("Password updated successfully.");
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Server not responding properly");
+      }
 
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+      if (!res.ok) {
+        throw new Error(data.error || "Password update failed");
+      }
 
-    setTimeout(() => {
-      setShowPasswordForm(false);
-      setSuccessMessage("");
-    }, 1500);
+      setSuccessMessage("Password updated successfully.");
+
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+
+      setTimeout(() => {
+        setShowPasswordForm(false);
+        setSuccessMessage("");
+      }, 1500);
+
+    } catch (err) {
+      setPasswordError(err.message);
+    }
   };
 
   return (
@@ -129,7 +136,7 @@ function Profile() {
 
         {activeTab === "dashboard" && (
           <>
-            <h1>My Learning Dashboard</h1>
+            <h1>My Learning Dashboard</h1>d
 
             <div className="card">
               <h3>👋 Hello, {loggedUser?.fullName}</h3>

@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection (with better logs)
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB Connected");
@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 });
 
 
-// 🔥 REGISTER API (WITH DEBUG LOGS)
+// 🔥 REGISTER API
 app.post("/api/users", async (req, res) => {
   try {
     console.log("\n📥 API HIT: /api/users");
@@ -36,27 +36,22 @@ app.post("/api/users", async (req, res) => {
 
     const { name, email, password } = req.body;
 
-    // validation
     if (!name || !email || !password) {
-      console.log("❌ Missing fields");
       return res.status(400).json({ error: "All fields required" });
     }
 
-    // check duplicate
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log("❌ User already exists:", email);
       return res.status(400).json({ error: "User already exists" });
     }
 
-    // save to DB
     const user = await User.create({
       name,
       email,
       password
     });
 
-    console.log("✅ USER SAVED IN DB:", user);
+    console.log("✅ USER SAVED:", user);
 
     res.status(201).json(user);
 
@@ -67,7 +62,7 @@ app.post("/api/users", async (req, res) => {
 });
 
 
-// 🔥 LOGIN API
+// 🔥 LOGIN API (CORRECT)
 app.post("/api/login", async (req, res) => {
   try {
     console.log("\n📥 API HIT: /api/login");
@@ -78,13 +73,10 @@ app.post("/api/login", async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      console.log("❌ User not found");
       return res.status(400).json({ error: "User not found" });
     }
 
-    // simple password match
     if (password !== user.password) {
-      console.log("❌ Wrong password");
       return res.status(400).json({ error: "Invalid password" });
     }
 
@@ -93,6 +85,7 @@ app.post("/api/login", async (req, res) => {
     res.json({
       message: "Login successful",
       user: {
+        id: user._id,
         name: user.name,
         email: user.email
       }
@@ -104,6 +97,65 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+
+// 🔥 UPDATE USER
+app.put("/api/users/:id", async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { name, email },
+      { new: true }
+    );
+
+    res.json(updatedUser);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+// 🔐 UPDATE PASSWORD
+app.put("/api/users/update-password/:id", async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (user.password !== oldPassword) {
+      return res.status(400).json({ error: "Old password incorrect" });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+// ❌ DELETE USER
+app.delete("/api/users/:id", async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "User deleted successfully" });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 // 🔥 GET ALL COURSES
 app.get("/api/courses", async (req, res) => {
   try {
@@ -113,6 +165,7 @@ app.get("/api/courses", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // START SERVER
 const PORT = process.env.PORT || 5000;
