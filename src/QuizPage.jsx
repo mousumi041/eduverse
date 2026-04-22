@@ -1,5 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import "./courses.css";
+
+import { getQuizQuestions } from "./quizBank.js";
 
 function QuizPage() {
   const { subject } = useParams();
@@ -7,33 +10,34 @@ function QuizPage() {
 
   const quizBank = {
     React: [
-      { q: "What is React?", options: ["Library", "Language", "DB", "Server"], a: 0 },
-      { q: "Hook for state?", options: ["useEffect", "useState", "useRef", "useMemo"], a: 1 },
-      { q: "JSX stands for?", options: ["Java XML", "JS Syntax", "JS Extension", "JSON XML"], a: 2 },
-      { q: "React is developed by?", options: ["Google", "Meta", "Microsoft", "Amazon"], a: 1 },
-      { q: "Virtual DOM is?", options: ["Real DOM", "Copy of DOM", "Database", "API"], a: 1 },
-      { q: "Component type?", options: ["Class & Function", "Only Class", "Only Function", "None"], a: 0 },
-      { q: "Props are?", options: ["Mutable", "Immutable", "Both", "None"], a: 1 },
-      { q: "useEffect runs?", options: ["After render", "Before render", "Never", "Always"], a: 0 },
-      { q: "Key in list?", options: ["Optional", "Required", "Ignored", "None"], a: 1 },
-      { q: "React uses?", options: ["MVC", "Component-based", "OOP only", "Procedural"], a: 1 }
+      {
+        q: "What is React?",
+        options: [
+          "A JavaScript library",
+          "A programming language",
+          "A database",
+          "A web server"
+        ],
+        a: 0
+      },
+      {
+        q: "Which hook is used for state?",
+        options: ["useEffect", "useState", "useRef", "useContext"],
+        a: 1
+      }
     ],
-
     JavaScript: [
-      { q: "Which is NOT datatype?", options: ["String", "Boolean", "Undefined", "Float"], a: 3 },
-      { q: "JS is?", options: ["Compiled", "Interpreted", "Both", "None"], a: 1 },
-      { q: "let is?", options: ["Block scoped", "Global", "Function", "None"], a: 0 },
-      { q: "=== means?", options: ["Equal", "Strict equal", "Assign", "None"], a: 1 },
-      { q: "NaN means?", options: ["Null", "Not a number", "Zero", "Error"], a: 1 },
-      { q: "Array method?", options: ["push", "add", "insert", "put"], a: 0 },
-      { q: "typeof null?", options: ["null", "object", "undefined", "string"], a: 1 },
-      { q: "JS runs in?", options: ["Browser", "Server", "Both", "None"], a: 2 },
-      { q: "Promise is?", options: ["Object", "Function", "Loop", "None"], a: 0 },
-      { q: "DOM stands for?", options: ["Data Obj", "Doc Model", "Document Object Model", "None"], a: 2 }
+
+      {
+        q: "Which is NOT a JavaScript datatype?",
+        options: ["String", "Boolean", "Undefined", "Float"],
+        a: 3
+      }
     ]
   };
 
-  const [questions, setQuestions] = useState([]);
+  const questions = quizBank[subject] || [];
+
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState(null);
   const [score, setScore] = useState(0);
@@ -139,25 +143,22 @@ function QuizPage() {
                 padding: "14px 20px",
                 borderRadius: "14px",
                 cursor: "pointer",
-                pointerEvents: "auto",
-                position: "relative",
-                zIndex: 2,
                 border:
                   selected === i
-                    ? "2px solid #ff8c00"
-                    : "1px solid rgba(255,255,255,0.3)",
+                    ? "2px solid #5624d0"
+                    : "1px solid #e2e8f0",
                 background:
                   selected === i
                     ? "rgba(255, 204, 112, 0.25)"
                     : "rgba(255,255,255,0.08)",
-                color: "#e2e8f0"
+                color: "#fff"
               }}
             >
               {op.text}
             </div>
           ))}
 
-          <button onClick={handleNext} disabled={selected === null} style={{ position: "relative", zIndex: 2 }}>
+          <button onClick={handleNext} disabled={selected === null}>
             {index + 1 === questions.length ? "Submit Quiz" : "Next"}
           </button>
         </div>
@@ -183,7 +184,10 @@ function QuizPage() {
             })}
           </div>
 
-          <button onClick={() => navigate("/profile")}>
+          <button
+            onClick={() => navigate("/profile")}
+            style={{ position: "relative", zIndex: 2 }}
+          >
             Back to Dashboard
           </button>
         </div>

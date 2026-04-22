@@ -19,7 +19,11 @@ mongoose.connect(process.env.MONGO_URI)
     console.log("✅ MongoDB Connected");
     console.log("👉 DB Name:", mongoose.connection.name);
   })
-  .catch(err => console.log("❌ DB ERROR:", err));
+  .catch(err => {
+    console.log("❌ DB CONNECTION ERROR:", err.message);
+    console.log("⚠️ Exiting server because DB is required. Please check your connection or IP whitelist.");
+    process.exit(1);
+  });
 
 
 // TEST ROUTE
@@ -96,65 +100,6 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-
-// 🔥 UPDATE USER
-app.put("/api/users/:id", async (req, res) => {
-  try {
-    const { name, email } = req.body;
-
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      { name, email },
-      { new: true }
-    );
-
-    res.json(updatedUser);
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-
-// 🔐 UPDATE PASSWORD
-app.put("/api/users/update-password/:id", async (req, res) => {
-  try {
-    const { oldPassword, newPassword } = req.body;
-
-    const user = await User.findById(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    if (user.password !== oldPassword) {
-      return res.status(400).json({ error: "Old password incorrect" });
-    }
-
-    user.password = newPassword;
-    await user.save();
-
-    res.json({ message: "Password updated successfully" });
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-
-// ❌ DELETE USER
-app.delete("/api/users/:id", async (req, res) => {
-  try {
-    await User.findByIdAndDelete(req.params.id);
-
-    res.json({ message: "User deleted successfully" });
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
 
 // 🔥 GET ALL COURSES
 app.get("/api/courses", async (req, res) => {
